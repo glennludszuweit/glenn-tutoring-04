@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    ////////Exercise 1
+    //Create button to toggle posts
+    const createButton = document.createElement('button');
+    createButton.classList.add('button');
+    createButton.innerText = 'Toggle Users';
+    document.body.append(createButton);
+    const button = document.querySelector('.button');
+
+    //Create div to hold the posts
+    const createContainer = document.createElement('div');
+    createContainer.classList.add('result-container');
+    createContainer.style.display = 'none';
+    document.body.append(createContainer);
+    const container = document.querySelector('.result-container');
+
+    //fetch data and display to browser
+
+    //Promises .then()
+    fetch('https://jsonplaceholder.typicode.com/posts/?_limit=10')
+      .then((response) => response.json())
+      .then((posts) => {
+        posts.forEach((data) => {
+          const postTitle = document.createElement('h1');
+          const postBody = document.createElement('p');
+
+          postTitle.innerText = data.title;
+          postBody.innerText = data.body;
+
+          container.appendChild(postTitle);
+          container.appendChild(postBody);
+        });
+      });
+
+    //USING Async/Await
+    (async function () {
+      try {
+        let apiData = await fetch(
+          'https://jsonplaceholder.typicode.com/posts/?_limit=10'
+        );
+        let posts = await apiData.json();
+        posts.forEach((data) => {
+          const postTitle = document.createElement('h1');
+          const postBody = document.createElement('p');
+
+          postTitle.innerText = data.title;
+          postBody.innerText = data.body;
+
+          container.appendChild(postTitle);
+          container.appendChild(postBody);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+
+    //make button toggle results
+    button.addEventListener('click', () => {
+      if (container.style.display === 'none') {
+        container.style.display = '';
+      } else {
+        container.style.display = 'none';
+      }
+    });
+  </script>
+</html>
